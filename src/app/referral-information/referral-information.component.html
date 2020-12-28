@@ -1,1 +1,37 @@
 <p style="color:#00034B">referral-information works!</p>
+<div style="color:#00034B" class="container">
+  <table class="table table-trapped">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>Имя</th>
+      <th>Фамилия</th>
+      <th>Номер полиса</th>
+      <th>Номер телефона</th>
+      <th>ФИО врача</th>
+      <th>Должность</th>
+      <th>Дата приёма</th>
+      <th>МКБ</th>
+      <th>Направляющая МО</th>
+      <th>Статус</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let patient of referralInfo">
+      <td>{{patient.id}}</td>
+      <td>{{patient.patientFirstName}}</td>
+      <td>{{patient.patientLastName}}</td>
+      <td>{{patient.patientPolicyNumber}}</td>
+      <td>{{patient.patientTel}}</td>
+      <td>{{patient.doctorName}}</td>
+      <td>{{patient.doctorSpecialty}}</td>
+      <td>{{patient.date}}</td>
+      <td>{{patient.icdCode}}</td>
+      <td>{{patient.medicalOrganization}}</td>
+      <td>{{patient.status}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

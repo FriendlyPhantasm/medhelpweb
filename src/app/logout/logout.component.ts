@@ -11,7 +11,7 @@ import {ReferralsListComponent} from '../referrals-list/referrals-list.component
 import {ReferralInformationComponent} from '../referral-information/referral-information.component';
 
 const routes: Routes = [
-  { path: 'referral-information',    component: ReferralInformationComponent  }
+  { path: 'referral-information',    component: ReferralInformationComponent }
 ];
 
 @NgModule({
@@ -19,7 +19,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes)
   ],
-  exports:[
+  exports: [
     RouterModule
   ],
   declarations: []
@@ -48,7 +48,7 @@ export class Patients {
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.css']
+  styleUrls: ['./logout.component.css'],
 })
 
 export class LogoutComponent implements OnInit {
@@ -57,23 +57,36 @@ export class LogoutComponent implements OnInit {
 
   constructor(private http: HttpClient, router: Router) { }
 
-
+  // tslint:disable-next-line:typedef
   readReferral(id: number) {
+    /*this.referralID = id;*/
   }
 
-
+  // tslint:disable-next-line:typedef
   getPatient() {
 
-    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkxNDM2NzMsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.5-C8iaAXIbZeNCnIqMcAv7tT3C0tluECjEcCj7ebo1g'});
+    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkyMzIxNDAsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.DY1UW5f-DeRo_mpK0ucnPWyvTw6A8ZKvK360EhT6XUU'});
 
     this.http.get<any>('http://localhost:8080/directions', { headers: headersD }).subscribe(
       response => {
-        console.log(response);
+        /*console.log(response);*/
         this.patient = response;
       }
     );
   }
 
+  getPatientForPage() {
+
+    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkyMzIxNDAsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.DY1UW5f-DeRo_mpK0ucnPWyvTw6A8ZKvK360EhT6XUU'});
+
+    this.http.get<any>('http://localhost:8080/directions', { headers: headersD }).subscribe(
+      response => {
+        /*console.log(response);*/
+        this.patient = response;
+        return this.patient;
+      }
+    );
+  }
 
   ngOnInit(): void {
 
@@ -84,6 +97,7 @@ export class LogoutComponent implements OnInit {
    headers = headers.append('Accept', 'text/plain');
 
 
+   // tslint:disable-next-line:max-line-length
    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkxNDM2NzMsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.5-C8iaAXIbZeNCnIqMcAv7tT3C0tluECjEcCj7ebo1g'});
 
    const body = {username: 'user2', password: '12345678'};

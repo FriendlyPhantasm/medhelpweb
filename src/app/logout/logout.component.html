@@ -29,7 +29,7 @@
         <td>{{patient.icdCode}}</td>
         <td>{{patient.medicalOrganization}}</td>
         <td>{{patient.status}}</td>
-        <td><a [routerLink]="['/referral-information']"> <button type="button" (click)="readReferral(patient.id)">Просмотреть</button></a></td>
+        <td><a [routerLink]="['/referral-information/'+ (patient.id)]"> <button type="button" (click)="readReferral(patient.id)">Просмотреть</button></a></td>
       </tr>
     </tbody>
   </table>

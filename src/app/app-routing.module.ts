@@ -10,13 +10,13 @@ const routes: Routes = [
 		component:ReferralsListComponent
 	},
 	{
+    path:'referral-information/:id',
+    component: ReferralInformationComponent
+  },
+  {
 		path:'logout',
 		component:LogoutComponent
-	},
-  {
-    path:'referral-information',
-    component: ReferralInformationComponent
-  }
+	}
 ];
 
 @NgModule({
