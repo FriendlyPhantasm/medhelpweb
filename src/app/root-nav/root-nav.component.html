@@ -3,13 +3,14 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>ФИО врача</mat-toolbar>
+    <mat-toolbar>Бердникова С.П.</mat-toolbar>
     <div class="post">
-      <p>Должность</p>
+      <p>Регистратор</p>
     </div>
+    <hr width="90%" style="border: 1px solid #45357E">
     <mat-nav-list>
       <a mat-list-item [routerLink] = "['logout']">Список направлений</a>
-      <a mat-list-item [routerLink] = "['referrals-list']">Выйти</a>
+      <a style="position: absolute; bottom: 50px" mat-list-item [routerLink] = "['referrals-list']">Выйти</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -23,7 +24,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <div class="head-name">
-        <span>Список направлений</span>
+        <span></span>
       </div>
     </mat-toolbar>
     <ng-content></ng-content>

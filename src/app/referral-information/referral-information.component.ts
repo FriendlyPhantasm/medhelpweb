@@ -1,7 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import {LogoutComponent, Patients} from '../logout/logout.component';
+import { Referral, Status } from '../logout/logout.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+
+export class Referrals {
+  constructor(
+    public direction: Referral,
+    public status: Status,
+  ) {
+  }
+}
+
+export class AnalysisInfo {
+  constructor(
+    public id: string,
+    public name: string,
+    public isChecked: boolean,
+    // tslint:disable-next-line:variable-name
+    public file_id: string,
+  ) {
+  }
+}
+
+export class Analysis {
+  constructor(
+    public status: Status,
+    public analysis: AnalysisInfo[],
+  ) {
+  }
+}
 
 @Component({
   selector: 'app-referral-information',
@@ -13,26 +40,64 @@ export class ReferralInformationComponent implements OnInit {
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
-  patient: Patients[] = [];
-  referralInfo: Patients[] = [];
+  // @ts-ignore
+  referral = new Referrals();
+  // @ts-ignore
+  referralInfo = new Referral();
+  status: string | undefined;
+
+  // @ts-ignore
+  analysisJSON = new Analysis();
+  analysisInfo: AnalysisInfo[] = [];
+
+
+  statusMap = new Map([
+        [ 0, 'Ожидаются результаты'],
+        [ 1, 'Ожидает проверки'],
+        [ 2, 'Одобрено'],
+        [ 3, 'Отклонено']
+    ]);
+
+
+
 
   getReferralByID(id: number) {
 
-    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkyMzIxNDAsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.DY1UW5f-DeRo_mpK0ucnPWyvTw6A8ZKvK360EhT6XUU'});
+    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTEyMzUyNTQsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.yLavd28aw5h9C8WJ4_6Y5WPJxLkt7P2nkQKVBOqFcJ0'});
+    let urlDir: string;
+    urlDir = 'http://localhost:8080/direction/' + String(id);
 
-    this.http.get<any>('http://localhost:8080/directions', { headers: headersD }).subscribe(
+    this.http.get<any>(urlDir, { headers: headersD }).subscribe(
       response => {
-        console.log(response);
-        this.patient = response;
-        this.referralInfo[0] = this.patient[id];
-        console.log(this.referralInfo);
+        this.referral = response;
+        this.referralInfo = this.referral.direction;
+        this.status = this.statusMap.get(Number(this.referralInfo.status));
       }
     );
-/*    console.log(id);
-    console.log(this.patient);*/
-/*    return this.patient[1];*/
+    let urlAn: string;
+    urlAn = urlDir + '/analysis';
+    this.http.get<any>(urlAn, { headers: headersD }).subscribe(
+      response => {
+        this.analysisJSON = response;
+        this.analysisInfo = this.analysisJSON.analysis;
+        console.log(this.analysisInfo);
+      }
+    );
   }
 
+  changeStatus(st: string, direction: Referral) {
+    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTEyMzUyNTQsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.yLavd28aw5h9C8WJ4_6Y5WPJxLkt7P2nkQKVBOqFcJ0'});
+    this.http.post<any>('http://localhost:8080/status', {
+      directionId: Number(direction.id),
+      status: Number(st)
+    }, { headers: headersD }).subscribe(
+      response => {
+      console.log(response);
+      }
+    );
+    /*this.getReferralByID(Number(direction.id));*/
+    this.status = this.statusMap.get(Number(st));
+  }
 
   ngOnInit(): void {
 

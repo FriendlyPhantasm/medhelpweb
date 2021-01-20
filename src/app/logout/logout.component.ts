@@ -1,14 +1,8 @@
 import {Component, NgModule, OnInit} from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
-
 import {Router, RouterModule, Routes} from '@angular/router';
-
-import { DirectionsService } from '../directions.service';
-import {ReferralsListComponent} from '../referrals-list/referrals-list.component';
-import {ReferralInformationComponent} from '../referral-information/referral-information.component';
+import { ReferralInformationComponent } from '../referral-information/referral-information.component';
 
 const routes: Routes = [
   { path: 'referral-information',    component: ReferralInformationComponent }
@@ -27,7 +21,15 @@ const routes: Routes = [
 
 export class AppRoutingModule { }
 
-export class Patients {
+export class Status {
+  constructor(
+    public status: string,
+    public message: string,
+) {
+  }
+}
+
+export class Referral {
   constructor(
     public id: number,
     public patientFirstName: string,
@@ -40,6 +42,17 @@ export class Patients {
     public icdCode: string,
     public medicalOrganization: string,
     public status: string,
+    public patientBirthDate: string,
+    public justification: string,
+    public organizationContact: string,
+  ) {
+  }
+}
+
+export class Referrals {
+  constructor(
+    public status: Status,
+    public directions: Referral[],
   ) {
   }
 }
@@ -53,7 +66,9 @@ export class Patients {
 
 export class LogoutComponent implements OnInit {
 
-  patient: Patients[] = [];
+  // @ts-ignore
+  referralsJSON = new Referrals();
+  referrals: Referral[] = [];
 
   constructor(private http: HttpClient, router: Router) { }
 
@@ -65,25 +80,15 @@ export class LogoutComponent implements OnInit {
   // tslint:disable-next-line:typedef
   getPatient() {
 
-    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkyMzIxNDAsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.DY1UW5f-DeRo_mpK0ucnPWyvTw6A8ZKvK360EhT6XUU'});
+/*    const body = {username: 'user2', password: '12345678'};
+    this.http.post('http://localhost:8080/auth', body, {responseType: 'text'}).subscribe((data) => {const receivedToken = data});*/
+
+    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTEyMzUyNTQsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.yLavd28aw5h9C8WJ4_6Y5WPJxLkt7P2nkQKVBOqFcJ0'});
 
     this.http.get<any>('http://localhost:8080/directions', { headers: headersD }).subscribe(
       response => {
-        /*console.log(response);*/
-        this.patient = response;
-      }
-    );
-  }
-
-  getPatientForPage() {
-
-    const headersD = new HttpHeaders({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDkyMzIxNDAsInJvbGUiOiJyZWdpc3RyYXIiLCJ1c2VybmFtZSI6InVzZXIyIn0.DY1UW5f-DeRo_mpK0ucnPWyvTw6A8ZKvK360EhT6XUU'});
-
-    this.http.get<any>('http://localhost:8080/directions', { headers: headersD }).subscribe(
-      response => {
-        /*console.log(response);*/
-        this.patient = response;
-        return this.patient;
+        this.referralsJSON = response;
+        this.referrals = this.referralsJSON.directions;
       }
     );
   }

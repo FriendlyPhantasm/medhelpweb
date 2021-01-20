@@ -1,6 +1,9 @@
 <div style="color:#00034B" class="container">
+  <div class="head-name">
+    <p>Список направлений</p>
+  </div>
   <table class="table table-trapped">
-    <thead>
+    <thead style="color: #00034B">
       <tr>
         <th>id</th>
         <th>Имя</th>
@@ -17,7 +20,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let patient of patient">
+      <tr *ngFor="let patient of referrals">
         <td>{{patient.id}}</td>
         <td>{{patient.patientFirstName}}</td>
         <td>{{patient.patientLastName}}</td>
